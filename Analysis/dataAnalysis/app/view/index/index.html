@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/public/static/images/analysis.ico" />
+    <title>学生成绩分析工具</title>
+</head>
+<link rel="stylesheet" href="/public/static/layui/css/layui.css">
+<link rel="stylesheet" href="/public/static/css/main.css">
+<script src='/public/static/js/jquery-3.5.1.min.js'></script>
+<style>
+  .layui-layer-content{
+    padding:20px;
+    font-family:"YouYuan";
+    line-height: 25px;
+  }  
+</style>
+<body>
+ 
+  <div class="layui-layout layui-layout-admin">
+    <div class="layui-header layui-bg-blue">
+      <div class="layui-logo layui-hide-xs layui-bg-black "><strong>学生成绩在线分析工具</strong></div>
+      <!-- 头部区域（可配合layui 已有的水平导航） -->
+      <ul class="layui-nav layui-layout-left">
+        <!-- 移动端显示 -->
+        <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-header-event="menuLeft">
+          <i class="layui-icon layui-icon-spread-left"></i>
+        </li>
+        <li class="layui-nav-item layui-hide-xs"><a href="" target="_blank" style="color:#f15b16ce;font-weight: 400;" >使用说明</a></li>
+        <li class="layui-nav-item layui-hide-xs"><a href="http://www.pigai.org/guest2016.html">英语作文在线批改</a></li>
+        <li class="layui-nav-item layui-hide-xs"><a href="http://www.gaokao.com/">高考网</a></li>
+        <li class="layui-nav-item layui-hide-xs"><a href="https://www.chatiba.com/">查题吧</a></li>
+        
+        <li class="layui-nav-item">
+          
+          <a href="javascript:;">我的工具站点</a>
+          <dl class="layui-nav-child">
+            <dd><a href="https://www.51zxw.net">技能自学</a></dd>
+            <dd><a href="https://www.toolnb.com">在线工具箱 22</a></dd>
+            <dd><a href="https://www.pdfpai.com">文档处理在线工具</a></dd>
+          </dl>
+        </li>
+        
+      </ul>
+      
+      <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item">
+          <a id="refresh">
+            <i class="layui-icon layui-icon-refresh"></i>
+          </a>
+        </li>
+        <li class="layui-nav-item" lay-header-event="menuRight" lay-unselect>
+          <a href="javascript:;">
+            <i class="layui-icon layui-icon-more-vertical"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+    
+    <div class="layui-side layui-bg-black">
+      <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+          
+          <div class="layui-btn-container" style="width:100%;text-align:center;">
+            <button type="button" class="layui-btn layui-btn-warm" id="uploadExcel"><i class="layui-icon"></i>上传Excel文件</button>
+          </div>
+          <div class="radioGroup">
+            <label class="active">
+                <input type="radio" checked=true name="parent_radio" value="0"/>
+                初小
+              </label>
+            <label>
+                <input type="radio" name="parent_radio" value="1"/>
+                高中
+            </label>
+          </div>
+          
+          <li class="layui-nav-item layui-nav-itemed">
+            <a class="" href="javascript:;"><i class="layui-icon layui-icon-tabs" style="font-size: 15px; color:#ffb800;padding-right: 10px;"></i>综合卷面设置</a>
+            
+            
+            <dl class="layui-nav-child">
+              <dd>
+                <div class="layui-inline" style="padding:10px 0 10px 0;">
+                  <label style="padding: 0 10px 0 20px;">考试总分</label>
+                  <input type="text" name="full_score" value='680'  autocomplete="off" style="width: 50%;height: 25px;">
+                </div>
+              </dd>
+              <dd>
+                <div class="layui-inline" style="padding:10px 0 10px 0;">
+                  <label style="padding: 0 10px 0 20px;">达标成绩</label>
+                  <input type="text" name="pass_score" value='400'  autocomplete="off" style="width: 50%;height: 25px;">
+                </div>
+              </dd>
+              <dd>
+                <div class="layui-inline" style="padding:10px 0 10px 0;">
+                  <label style="padding: 0 10px 0 20px;">拔尖成绩</label>
+                  <input type="text" name="grate_score" value='540'  autocomplete="off" style="width: 50%;height: 25px;">
+                </div>
+              </dd>
+            </dl>
+          </li>
+          <li class="layui-nav-item layui-nav-item">
+            <a class="" href="javascript:;"><i class="layui-icon layui-icon-tabs" style="font-size: 15px; color:#ffb800;padding-right: 10px;"></i>单科卷面设置</a>
+            <dl class="layui-nav-child">
+              <dd>
+                <div class="layui-inline" style="padding:10px 0 10px 0;">
+                  <label style="padding: 0 10px 0 20px;">语文总分</label>
+                  <input type="text" name="chinese_score" value='120'  autocomplete="off" style="width: 50%;height: 25px;">
+                </div>
+              </dd>
+              <dd>
+                <div class="layui-inline" style="padding:10px 0 10px 0;">
+                  <label style="padding: 0 10px 0 20px;">数学总分</label>
+                  <input type="text" name="math_score" value='120'  autocomplete="off" style="width: 50%;height: 25px;">
+                </div>
+              </dd>
+              <dd>
+                <div class="layui-inline" style="padding:10px 0 10px 0;">
+                  <label style="padding: 0 10px 0 20px;">英语总分</label>
+                  <input type="text" name="english_score" value='120'  autocomplete="off" style="width: 50%;height: 25px;">
+                </div>
+              </dd>
+              <dd>
+                <div class="layui-inline" style="padding:10px 0 10px 0;">
+                  <label style="padding: 0 10px 0 20px;">物理总分</label>
+                  <input type="text" name="physic_score" value='70'  autocomplete="off" style="width: 50%;height: 25px;">
+                </div>
+              </dd>
+              <dd>
+                <div class="layui-inline" style="padding:10px 0 10px 0;">
+                  <label style="padding: 0 10px 0 20px;">化学总分</label>
+                  <input type="text" name="chemistry_score" value='50'  autocomplete="off" style="width: 50%;height: 25px;">
+                </div>
+              </dd>
+              <dd>
+                <div class="layui-inline" style="padding:10px 0 10px 0;">
+                  <label style="padding: 0 10px 0 20px;">生物总分</label>
+                  <input type="text" name="biology_score" value='40'  autocomplete="off" style="width: 50%;height: 25px;">
+                </div>
+              </dd>
+              <dd>
+                <div class="layui-inline" style="padding:10px 0 10px 0;">
+                  <label style="padding: 0 10px 0 20px;">历史总分</label>
+                  <input type="text" name="history_score" value='60'  autocomplete="off" style="width: 50%;height: 25px;">
+                </div>
+              </dd>
+              <dd>
+                <div class="layui-inline" style="padding:10px 0 10px 0;">
+                  <label style="padding: 0 10px 0 20px;">政治总分</label>
+                  <input type="text" name="politics_score" value='60'  autocomplete="off" style="width: 50%;height: 25px;">
+                </div>
+              </dd>
+              <dd>
+                <div class="layui-inline" style="padding:10px 0 10px 0;">
+                  <label style="padding: 0 10px 0 20px;">地理总分</label>
+                  <input type="text" name="geography_score" value='40'  autocomplete="off" style="width: 50%;height: 25px;">
+                </div>
+              </dd>
+              
+              </dd>
+            </dl>
+          </li>
+        
+        </ul>
+      </div>
+    </div>
+    
+    <div class="layui-body">
+      <!-- 内容主体区域 -->
+      
+        <iframe id="screenIframe" class="myIframe" crossorigin="anonymous" src="http://localhost:806/index.html"></iframe>
+      
+    </div>
+    
+    <div class="layui-footer">
+      <!-- 底部固定区域 -->
+      <button type="button" class="layui-btn layui-btn-normal layui-layout-right" style="height: 100%;" id="export"><i class="layui-icon layui-icon-print" style="font-size: 18px;color: #05e9e7;padding-right:5px"></i>导出</button>
+    </div>
+  </div>
+  <script src='/public/static/layui/layui.js'></script>
+  
+  <script>
+  
+  var uuid;
+  var full_score,pass_score,grate_score,chinese_score,math_score,english_score,phycis_score,chemistry_score,biology_score,history_score,politics_score,geography_score;
+  layui.use(['element', 'layer', 'util'], function(){
+    var element = layui.element
+    ,layer = layui.layer
+    ,util = layui.util
+    ,$ = layui.$;
+    
+    //头部事件
+    util.event('lay-header-event', {
+      //左侧菜单事件
+      menuLeft: function(othis){
+        layer.msg('展开左侧菜单的操作', {icon: 0});
+        
+      }
+      ,menuRight: function(){
+        layer.open({
+          type: 1
+          ,content: "<h3><strong>关于这个工具</strong></h3></br><h4>随着国内数字化进程的活跃，而我作为该行业的从业者，深知数据分析背后的价值与意义。想到国内的教育行业普遍没有对学生成绩进行专项分析的工具，所以临时利用业余时间搞一个出来让诸君试试水。时间很紧导致该工具做的比较粗糙，很多细节禁不起推敲，但这工具的目的并不是成为分析学生成绩的利器，而是从某种层面让大家重视校园数字化的建设。</h4></br></br><h3><strong>合作</strong></h3></br><h4>对任何学校及教育组织发起的数字化项目，我个人都保持积极的态度。并有一套校园级的学生成绩分析系统方案的建设思路，欢迎广大教育从事者前来交流或者联系我做项目！</h4></br></br><h3><strong>联系方式</strong></h3></br><h4>为避免对生活工作产生打扰，现公布QQ小号及邮箱。</br><a href=''>1361954977@qq.com</a></br><a href=''>songasong163@163.com</a></h4>"
+          ,area: ['260px', '100%']
+          ,offset: 'rt' //右上角
+          ,anim: 5
+          ,shadeClose: true
+        });
+      }
+    });
+    
+  });
+
+  layui.use(['upload', 'element', 'layer'], function(){
+    var $ = layui.jquery
+    ,upload = layui.upload
+    ,element = layui.element
+    ,layer = layui.layer;
+    
+    //拖拽上传
+    upload.render({
+      elem: '#uploadExcel'
+      ,url: 'http://localhost:805/public/index.php/index/Analysis' //此处用的是第三方的 http 请求演示，实际使用时改成您自己的上传接口即可。
+      ,accept:'file'
+      ,exts:'xlsx|xls'
+      ,done: function(res){
+        console.log(res);
+        layer.msg('上传成功,开始分析');
+        //layui.$('#uploadDemoView').removeClass('layui-hide').find('xlsx').attr('src', res.files.file);
+        uuid = res;
+        $('#refresh').click();
+      }
+    });
+  });
+ 
+
+  $('#refresh').click(function(){
+    full_score = $("input[name='full_score']").val();
+    pass_score = $("input[name='pass_score']").val();
+    grate_score = $("input[name='grate_score']").val();
+    chinese_score = $("input[name='chinese_score']").val();
+    math_score = $("input[name='math_score']").val();
+    english_score = $("input[name='english_score']").val();
+    physic_score = $("input[name='physic_score']").val();
+    chemistry_score = $("input[name='chemistry_score']").val();
+    biology_score = $("input[name='biology_score']").val();
+    history_score = $("input[name='history_score']").val();
+    politics_score = $("input[name='politics_score']").val();
+    geography_score = $("input[name='geography_score']").val();
+    
+  var paras = "uuid="+uuid+"&full_score="+full_score+"&pass_score="+pass_score+"&grate_score="+grate_score+"&chinese_score="+chinese_score+"&math_score="+math_score+"&english_score="+english_score+"&physic_score="+physic_score+"&chemistry_score="+chemistry_score+"&biology_score="+biology_score+"&history_score="+history_score+"&politics_score="+politics_score+"&geography_score="+geography_score;
+  if(uuid!=null){
+    $('#screenIframe').attr('src', $('#screenIframe').attr('src').split('?')[0]);
+    $('#screenIframe').attr('src', $('#screenIframe').attr('src')+"?"+paras);
+  }
+ 
+  });
+  
+//单选框点击事件
+ var demand_str = $('input:radio:checked').val()
+  $(".radioGroup label").click(function () {
+      var index = $(this).index();
+       $(".radioGroup label").removeClass("active"), 
+       $(".radioGroup label").eq(index).addClass("active")
+  })
+  
+  $(".radioGroup input").click(function () {
+      var index = $(this).index();
+      demand_str = $('input:radio:checked').val(); //获取单选的值有三种写法
+      // demand_str = $("input[type='radio']:checked").val();
+      // demand_str = $("input[name='parent_radio']:checked").val();
+      
+      if(demand_str==0){
+        $("input[name='full_score']").val(680);
+        $("input[name='pass_score']").val(680*0.6);
+        $("input[name='grate_score']").val(680*0.8);
+        $("input[name='chinese_score']").val(120);
+        $("input[name='math_score']").val(120);
+        $("input[name='english_score']").val(120);
+        $("input[name='physic_score']").val(70);
+        $("input[name='chemistry_score']").val(50);
+        $("input[name='biology_score']").val(40);
+        $("input[name='history_score']").val(60);
+        $("input[name='politics_score']").val(60);
+        $("input[name='geography_score']").val(40);
+      }else{
+        $("input[name='full_score']").val(750);
+        $("input[name='pass_score']").val(parseInt(750*0.55));
+        $("input[name='grate_score']").val(750*0.62);
+        $("input[name='chinese_score']").val(150);
+        $("input[name='math_score']").val(150);
+        $("input[name='english_score']").val(150);
+        $("input[name='physic_score']").val(110);
+        $("input[name='chemistry_score']").val(100);
+        $("input[name='biology_score']").val(90);
+        $("input[name='history_score']").val(100);
+        $("input[name='politics_score']").val(100);
+        $("input[name='geography_score']").val(100);
+      }
+  }) 
+ 
+
+</script>
+<script>
+  
+    $('#export').click(function(){
+        document.getElementById('screenIframe').contentWindow.postMessage('export','*');
+        
+    });
+    /*
+    function downloadPDF () {
+      var target = document.getElementsByClassName("myIframe")[0];
+      //target.style.background = "url("+data[0].url+")";
+      target.style.background = "#fffff";
+      html2canvas(target, {
+        allowTaint:true,
+        useCORS:true,
+        onrendered:function(canvas) {
+          var contentWidth = canvas.width;
+          var contentHeight = canvas.height;
+
+          //一页pdf显示html页面生成的canvas高度;
+          var pageHeight = contentWidth / 592.28 * 841.89;
+          //未生成pdf的html页面高度
+          var leftHeight = contentHeight;
+          //页面偏移
+          var position = 0;
+          //a4纸的尺寸[595.28,841.89]，html页面生成的canvas在pdf中图片的宽高
+          var imgWidth = 595.28;
+          var imgHeight = 592.28/contentWidth * contentHeight;
+          const image = new Image();
+          // 解决跨域 Canvas 污染问题
+          
+          image.setAttribute("crossOrigin", "anonymous");
+          var pageData = canvas.toDataURL('image/jpeg', 1.0);
+          var pdf = new jsPDF('', 'pt', 'a4');
+
+          //有两个高度需要区分，一个是html页面的实际高度，和生成pdf的页面高度(841.89)
+          //当内容未超过pdf一页显示的范围，无需分页
+          if (leftHeight < pageHeight) {
+            pdf.addImage(pageData, 'PNG', 0, 0, imgWidth, imgHeight );
+          } else {
+              while(leftHeight > 0) {
+                  pdf.addImage(pageData, 'PNG', 0, position, imgWidth, imgHeight)
+                  leftHeight -= pageHeight;
+                  position -= 841.89;
+                  //避免添加空白页
+                  if(leftHeight > 0) {
+                    pdf.addPage();
+                  }
+              }
+            }
+
+            pdf.save("content.pdf");
+        }
+        })
+    }
+    */
+</script>
+</body>
+</html>
