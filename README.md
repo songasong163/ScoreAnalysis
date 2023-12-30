@@ -7,9 +7,9 @@
 Thinkphp 6.0 + LayUI + html2pdf.js + Mysql 8.0 + echarts
 
 #### 项目截图
-![Example Image](./github_des_img/analysis_home.jpg)
+![Example Image](./Analysis/github_des_img/analysis_home.jpg)
 
-![Example Image](./github_des_img/analysis_other.jpg)
+![Example Image](./Analysis/github_des_img/analysis_other.jpg)
 
-![Example Image](./github_des_img/analysis_second.jpg)
+![Example Image](./Analysis/github_des_img/analysis_second.jpg)
 
